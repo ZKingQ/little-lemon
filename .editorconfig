@@ -1,0 +1,17 @@
+[*]
+indent_style = space
+
+[*.{js,ts,json}]
+indent_size = 2
+
+[*.{css,scss}]
+indent_size = 2
+
+[*.{html,htm,xml}]
+indent_size = 2
+
+[*.{md,markdown}]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
