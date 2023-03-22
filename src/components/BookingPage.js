@@ -2,12 +2,16 @@ import './BookingPage.css';
 import React, { useEffect } from 'react';
 import { Form, ErrorMessage, Formik, Field } from 'formik';
 import * as Yup from 'yup';
+import { Link } from 'react-router-dom';
 
-const ConfirmedBooking = (props) => {
+const ConfirmedBooking = () => {
   return (
     <div className="booking-confirmed">
       <h2>Booking Confirmed</h2>
-      <p>Thank you for booking with us. We look forward to seeing you on {props.date} at {props.time}.</p>
+      <p>Thank you for booking with us. We look forward to seeing you.</p>
+      <button>
+        <Link to="/">Back to Home</Link>
+      </button>
     </div>
   );
 }
@@ -16,7 +20,7 @@ const BookingForm = (props) => {
   const yup = Yup.object({
     date: Yup.date().required('Required'),
     time: Yup.string().required('Required'),
-    guests: Yup.number().min(1, 'min number: 1').max(10, 'max number: 10').required('Required'),
+    guests: Yup.number().min(1, 'Min number: 1').max(10, 'Max number: 10').required('Required'),
     occasion: Yup.string().required('Required'),
   });
   const [date, setDate] = React.useState('');
