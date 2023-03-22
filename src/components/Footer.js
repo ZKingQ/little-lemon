@@ -14,7 +14,7 @@ function Footer() {
             <a href="tel:555-555-5555">Phone: 555-555-5555</a>
           </ul>
           <ul>
-            <a href='mailto:'>Email: example@email</a>
+            <a href='mailto:'>Email: example@email.com</a>
           </ul>
         </li>
       </div>
