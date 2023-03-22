@@ -19,9 +19,8 @@ const initializeTimes = () => {
 function Main() {
   const [availableTimes, setAvailableTimes] = useReducer(updateTimes, initializeTimes());
     const navigate = useNavigate();
-  const submitForm = (e) => {
-    e.preventDefault();
-    if (submitAPI(e.target)) {
+  const submitForm = (values) => {
+    if (submitAPI(values)) {
       navigate('/booking/confirmed');
     }
   };

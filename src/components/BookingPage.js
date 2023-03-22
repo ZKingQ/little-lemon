@@ -1,5 +1,7 @@
 import './BookingPage.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Form, ErrorMessage, Formik, Field } from 'formik';
+import * as Yup from 'yup';
 
 const ConfirmedBooking = (props) => {
   return (
@@ -11,40 +13,71 @@ const ConfirmedBooking = (props) => {
 }
 
 const BookingForm = (props) => {
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-  const [time, setTime] = useState('17:00');
-  const [guests, setGuests] = useState(1);
-  const [occasion, setOccasion] = useState('Birthday');
+  const yup = Yup.object({
+    date: Yup.date().required('Required'),
+    time: Yup.string().required('Required'),
+    guests: Yup.number().min(1, 'min number: 1').max(10, 'max number: 10').required('Required'),
+    occasion: Yup.string().required('Required'),
+  });
+  const [date, setDate] = React.useState('');
+  const {setAvailableTimes} = props;
   useEffect(() => {
-    props.setAvailableTimes({ type: 'update', date: new Date(date) });
-  }, [date]);
+    setAvailableTimes({ type: 'update', date: new Date(date) });
+  }, [date, setAvailableTimes]);
   return (
-    <form style={{ display: 'grid', maxWidth: '200px', gap: '20px' }}
-      onSubmit={props.submitForm}>
-      <label htmlFor="res-date">Choose date</label>
-      <input type="date" id="res-date" value={date} onChange={(e) => setDate(e.target.value)} />
-      <label htmlFor="res-time">Choose time</label>
-      <select id="res-time" value={time} onChange={(e) => setTime(e.target.value)}>
-        {props.availableTimes.map((time) => (
-          <option key={time}>{time}</option>
-        ))}
-      </select>
-      <label htmlFor="guests">Number of guests</label>
-      <input type="number" value={guests} onChange={(e) => setGuests(e.target.value)} placeholder={1} min={1} max={10} id="guests" />
-      <label htmlFor="occasion">Occasion</label>
-      <select id="occasion" value={occasion} onChange={(e) => setOccasion(e.target.value)}>
-        <option>Birthday</option>
-        <option>Anniversary</option>
-      </select>
-      <input type="submit" value="Book Now" />
-    </form>
+    <Formik
+      initialValues={{
+        date: '',
+        time: '17:00',
+        guests: 1,
+        occasion: 'Birthday',
+      }}
+      validationSchema={yup}
+      onSubmit={(values, { setSubmitting }) => {
+        props.submitForm(values);
+        setSubmitting(false);
+      }}
+    >
+      {formik => (
+        <Form className='form'>
+          <label htmlFor="res-date">Choose date</label>
+          <Field type="date" id="res-date" name="date" 
+            onChange={(e) => {
+              setDate(e.target.value)
+              formik.handleChange(e)
+            }}
+           />
+          <ErrorMessage name="date" />
+          <label htmlFor="res-time">Choose time</label>
+          <Field as="select" id="res-time" name="time">
+            {props.availableTimes.map((time) => (
+              <option key={time}>{time}</option>
+            ))}
+          </Field>
+          <ErrorMessage name="time" />
+          <label htmlFor="guests">Number of guests</label>
+          <Field type="number" id="guests" name="guests" />
+          <ErrorMessage name="guests" />
+          <label htmlFor="occasion">Occasion</label>
+          <Field as="select" id="occasion" name="occasion">
+            <option>Birthday</option>
+            <option>Anniversary</option>
+            <option>Other</option>
+          </Field>
+          <ErrorMessage name="occasion" />
+          <input type="submit" value="Book Now"
+            aria-label="Book Now"
+            disabled={!formik.isValid}
+          />
+        </Form>
+      )}
+    </Formik>
   );
 }
 
 const BookingPage = (props) => {
   return (
     <>
-      {/* TODO: add style for booking form */}
       <BookingForm
         availableTimes={props.availableTimes}
         setAvailableTimes={props.setAvailableTimes}

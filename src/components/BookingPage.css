@@ -1,0 +1,41 @@
+/* beautiful form */
+.form {
+  display: grid;
+  grid-row: 2;
+  grid-column: 2;
+  max-width: '200px';
+  background: #f4f7f8;
+  margin: 1rem;
+}
+
+.form input {
+  display: block;
+  width: 100%;
+  padding: 7px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.form label {
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  color: #333333;
+}
+
+.form input[type="submit"] {
+  background: #f4ce14;
+  border-radius: 16px;
+  border: none;
+  color: #495e57;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+}
